@@ -48,6 +48,7 @@ export LUAJIT_VERSION=9d5750d28478abfdcaefdfdc408f87752a21e431
 export LUA_RESTY_BALANCER=0.03
 export LUA_RESTY_CORE=0.1.17
 export LUA_CJSON_VERSION=2.1.0.7
+export NAXSI_VER=0.56
 
 export BUILD_PATH=/tmp/build
 
@@ -129,6 +130,10 @@ function geoip2_get {
 
 mkdir --verbose -p "$BUILD_PATH"
 cd "$BUILD_PATH"
+
+mkdir --verbose -p naxsi
+wget https://github.com/nbs-system/naxsi/archive/${NAXSI_VER}.tar.gz -O naxsi/naxsi_${NAXSI_VER}.tar.gz
+tar -xvzf naxsi/naxsi_${NAXSI_VER}.tar.gz -C ${BUILD_PATH}/naxsi
 
 # download, verify and extract the source files
 get_src b62756842807e5693b794e5d0ae289bd8ae5b098e66538b2a91eb80f25c591ff \
@@ -499,7 +504,8 @@ WITH_MODULES="--add-module=$BUILD_PATH/ngx_devel_kit-$NDK_VERSION \
   --add-dynamic-module=$BUILD_PATH/ModSecurity-nginx-$MODSECURITY_VERSION \
   --add-dynamic-module=$BUILD_PATH/ngx_http_geoip2_module-${GEOIP2_VERSION} \
   --add-module=$BUILD_PATH/nginx_ajp_module-${NGINX_AJP_VERSION} \
-  --add-module=$BUILD_PATH/ngx_brotli"
+  --add-module=$BUILD_PATH/ngx_brotli \
+  --add-dynamic-module=${BUILD_PATH}/naxsi/naxsi-${NAXSI_VER}/naxsi_src/"
 
 ./configure \
   --prefix=/usr/local/nginx \

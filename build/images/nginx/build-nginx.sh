@@ -72,7 +72,8 @@ chmod +x /usr/local/bin/gimme
 
 eval "$(gimme 1.13.6)"
 
-git clone https://github.com/kubernetes/ingress-nginx
+git clone https://github.com/rkferreira/ingress-nginx
+#git clone https://github.com/kubernetes/ingress-nginx
 
 cd ingress-nginx/images/nginx
 
